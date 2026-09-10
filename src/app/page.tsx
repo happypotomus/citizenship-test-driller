@@ -12,7 +12,7 @@ import {
   X,
 } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
-import { officialPracticeQuestions, questions, type Question } from "@/data/questions";
+import { practiceSources, questions, type Question } from "@/data/questions";
 import styles from "./page.module.css";
 
 type ProfileId = "pranav" | "manal";
@@ -30,7 +30,7 @@ type ProfileProgress = {
   questionStats: Record<string, QuestionProgress>;
   drillAnswered: number;
   drillCorrect: number;
-  practiceRuns: { date: string; score: number; total: number }[];
+  practiceRuns: { date: string; score: number; total: number; sourceId?: string }[];
 };
 
 type StoredProgress = Record<ProfileId, ProfileProgress>;
@@ -41,6 +41,8 @@ const profiles: { id: ProfileId; name: string }[] = [
 ];
 
 const storageKey = "citizenship-test-driller-progress-v1";
+const questionIds = new Set(questions.map((question) => question.id));
+const questionsById = new Map(questions.map((question) => [question.id, question]));
 
 const emptyProfile = (): ProfileProgress => ({
   questionStats: {},
@@ -75,6 +77,29 @@ function percent(numerator: number, denominator: number) {
   return Math.round((numerator / denominator) * 100);
 }
 
+function cleanProgress(progress: StoredProgress): StoredProgress {
+  return {
+    pranav: cleanProfileProgress(progress.pranav ?? emptyProfile()),
+    manal: cleanProfileProgress(progress.manal ?? emptyProfile()),
+  };
+}
+
+function cleanProfileProgress(progress: ProfileProgress): ProfileProgress {
+  return {
+    ...emptyProfile(),
+    ...progress,
+    questionStats: Object.fromEntries(
+      Object.entries(progress.questionStats ?? {}).filter(([questionId]) => questionIds.has(questionId)),
+    ),
+  };
+}
+
+function sourceLabel(question: Question) {
+  if (question.source === "official-practice") return "IRCC official sample";
+  if (question.source === "official-study-question") return "IRCC study prompt";
+  return "Discover Canada drill";
+}
+
 export default function Home() {
   const [progress, setProgress] = useState<StoredProgress>(defaultProgress);
   const [loaded, setLoaded] = useState(false);
@@ -84,15 +109,15 @@ export default function Home() {
   const [current, setCurrent] = useState<Question>(questions[0]);
   const [selected, setSelected] = useState<number | null>(null);
   const [practiceSet, setPracticeSet] = useState<Question[]>([]);
+  const [practiceSourceId, setPracticeSourceId] = useState(practiceSources[2].id);
   const [practiceIndex, setPracticeIndex] = useState(0);
   const [practiceAnswers, setPracticeAnswers] = useState<Record<string, number>>({});
   const [practiceFinished, setPracticeFinished] = useState(false);
 
   const activeProgress = progress[profileId];
-  const answeredUnique = Object.values(activeProgress.questionStats).filter((stat) => stat.attempts > 0).length;
-  const mastered = Object.values(activeProgress.questionStats).filter(
-    (stat) => stat.attempts >= 2 && stat.incorrect === 0,
-  ).length;
+  const validStats = Object.entries(activeProgress.questionStats).filter(([questionId]) => questionIds.has(questionId));
+  const answeredUnique = validStats.filter(([, stat]) => stat.attempts > 0).length;
+  const mastered = validStats.filter(([, stat]) => stat.attempts >= 2 && stat.incorrect === 0).length;
   const drillAccuracy = percent(activeProgress.drillCorrect, activeProgress.drillAnswered);
   const latestPractice = activeProgress.practiceRuns.at(-1);
   const practiceQuestion = practiceSet[practiceIndex];
@@ -104,7 +129,7 @@ export default function Home() {
     queueMicrotask(() => {
       const raw = window.localStorage.getItem(storageKey);
       if (raw) {
-        setProgress({ ...defaultProgress(), ...JSON.parse(raw) });
+        setProgress(cleanProgress({ ...defaultProgress(), ...JSON.parse(raw) }));
       }
       setLoaded(true);
     });
@@ -161,10 +186,14 @@ export default function Home() {
     setSelected(null);
   }
 
-  function startPractice() {
-    const officialFirst = shuffle(officialPracticeQuestions);
-    const remaining = shuffle(questions.filter((question) => question.source !== "official-practice"));
-    setPracticeSet([...officialFirst, ...remaining].slice(0, 20));
+  function startPractice(sourceId = practiceSourceId) {
+    const source = practiceSources.find((item) => item.id === sourceId) ?? practiceSources[0];
+    const sourceQuestions = source.questionIds
+      .map((questionId) => questionsById.get(questionId))
+      .filter((question): question is Question => Boolean(question));
+    const nextSet = sourceQuestions.length <= 20 ? shuffle(sourceQuestions) : shuffle(sourceQuestions).slice(0, 20);
+    setPracticeSourceId(source.id);
+    setPracticeSet(nextSet);
     setPracticeIndex(0);
     setPracticeAnswers({});
     setPracticeFinished(false);
@@ -183,7 +212,7 @@ export default function Home() {
         ...previous[profileId],
         practiceRuns: [
           ...previous[profileId].practiceRuns,
-          { date: new Date().toISOString(), score: practiceScore, total: practiceSet.length },
+          { date: new Date().toISOString(), score: practiceScore, total: practiceSet.length, sourceId: practiceSourceId },
         ],
       },
     }));
@@ -200,7 +229,8 @@ export default function Home() {
 
   const activeCard = mode === "practice" && practiceQuestion ? practiceQuestion : current;
   const activeAnswer = mode === "practice" ? practiceAnswers[activeCard.id] : selected;
-  const officialCount = questions.filter((question) => question.source === "official-practice").length;
+  const officialCount = questions.filter((question) => question.source !== "discover-canada-derived").length;
+  const selectedPracticeSource = practiceSources.find((source) => source.id === practiceSourceId) ?? practiceSources[0];
 
   return (
     <main className={styles.shell}>
@@ -230,7 +260,7 @@ export default function Home() {
 
       <section className={styles.statsGrid}>
         <div className={styles.stat}>
-          <span>Answered</span>
+          <span>Seen</span>
           <strong>{answeredUnique}/{questions.length}</strong>
         </div>
         <div className={styles.stat}>
@@ -278,8 +308,8 @@ export default function Home() {
               <span>Question bank</span>
             </div>
             <p>
-              {questions.length} total cards. {officialCount} are from the official study-question page; the rest are
-              derived from Discover Canada topics.
+              {questions.length} cards in the drill bank. {officialCount} are direct IRCC sample questions or official
+              study prompts; review continues after every card has been seen.
             </p>
             <label>
               Category
@@ -310,21 +340,39 @@ export default function Home() {
         <section className={styles.practiceLayout}>
           <div className={styles.practiceHeader}>
             <div>
-              <p className={styles.eyebrow}>20 questions, pass at 15</p>
+              <p className={styles.eyebrow}>Official-source practice</p>
               <h2>Practice Test</h2>
             </div>
-            <button className={styles.secondaryButton} onClick={startPractice} type="button">
+            <button className={styles.secondaryButton} onClick={() => startPractice()} type="button">
               <Shuffle size={16} />
               New test
             </button>
+          </div>
+          <div className={styles.practiceControls}>
+            <label>
+              Source
+              <select
+                value={practiceSourceId}
+                onChange={(event) => {
+                  startPractice(event.target.value);
+                }}
+              >
+                {practiceSources.map((source) => (
+                  <option key={source.id} value={source.id}>
+                    {source.name}
+                  </option>
+                ))}
+              </select>
+            </label>
+            <p>{selectedPracticeSource.description}</p>
           </div>
 
           {practiceFinished ? (
             <div className={styles.resultPanel}>
               <Trophy size={34} />
               <h2>{practiceScore >= 15 ? "Passing score" : "Keep drilling"}</h2>
-              <p>You scored {practiceScore}/{practiceSet.length}. The official passing bar is 15 out of 20.</p>
-              <button className={styles.primaryButton} onClick={startPractice} type="button">
+              <p>You scored {practiceScore}/{practiceSet.length}. Full-length practice uses the official 15 out of 20 passing bar.</p>
+              <button className={styles.primaryButton} onClick={() => startPractice()} type="button">
                 Start another test
                 <ArrowRight size={18} />
               </button>
@@ -332,7 +380,7 @@ export default function Home() {
           ) : (
             <>
               <div className={styles.progressLine}>
-                <span>Question {practiceIndex + 1} of {practiceSet.length || 20}</span>
+                <span>Question {practiceIndex + 1} of {practiceSet.length || selectedPracticeSource.questionIds.length}</span>
                 <span>{practiceScore} correct so far</span>
               </div>
               {practiceQuestion && <QuestionCard question={practiceQuestion} selected={activeAnswer} onAnswer={answerPractice} />}
@@ -382,7 +430,7 @@ function QuestionCard({
     <article className={styles.card}>
       <div className={styles.cardMeta}>
         <span>{question.category}</span>
-        <span>{question.source === "official-practice" ? "Official practice" : "Discover Canada drill"}</span>
+        <span>{sourceLabel(question)}</span>
       </div>
       <h2>{question.prompt}</h2>
       <div className={styles.choices}>

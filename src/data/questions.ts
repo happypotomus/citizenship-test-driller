@@ -4,7 +4,7 @@ export type Question = {
   choices: string[];
   answer: number;
   category: string;
-  source: "official-practice" | "discover-canada-derived";
+  source: "official-practice" | "official-study-question" | "discover-canada-derived";
   explanation: string;
 };
 
@@ -62,7 +62,7 @@ export const questions: Question[] = [
     ],
     answer: 0,
     category: "Rights and Responsibilities",
-    source: "discover-canada-derived",
+    source: "official-study-question",
     explanation: "The guide emphasizes the Constitution and the Canadian Charter of Rights and Freedoms as key rights documents.",
   },
   {
@@ -76,7 +76,7 @@ export const questions: Question[] = [
     ],
     answer: 0,
     category: "Rights and Responsibilities",
-    source: "discover-canada-derived",
+    source: "official-study-question",
     explanation: "Fundamental freedoms include conscience and religion, thought and expression, peaceful assembly, and association.",
   },
   {
@@ -90,8 +90,53 @@ export const questions: Question[] = [
     ],
     answer: 0,
     category: "Rights and Responsibilities",
-    source: "discover-canada-derived",
+    source: "official-study-question",
     explanation: "Canadian law recognizes women and men as equal, including in family, work, and public life.",
+  },
+  {
+    id: "rights-006",
+    prompt: "Which set lists four rights that Canadians enjoy?",
+    choices: [
+      "Mobility rights, language rights, Aboriginal peoples' rights and equality rights.",
+      "The right to ignore taxes, the right to drive without a licence, the right to avoid jury duty and the right to vote twice.",
+      "The right to appoint judges, the right to name senators, the right to command police and the right to write federal budgets.",
+      "The right to own any land, the right to disregard bylaws, the right to refuse elections and the right to change laws alone.",
+    ],
+    answer: 0,
+    category: "Rights and Responsibilities",
+    source: "official-study-question",
+    explanation:
+      "The official study prompts ask applicants to identify rights Canadians enjoy, including mobility, language, Aboriginal peoples' and equality rights.",
+  },
+  {
+    id: "rights-007",
+    prompt: "Which set lists four fundamental freedoms Canadians enjoy?",
+    choices: [
+      "Conscience and religion; thought, belief, opinion and expression; peaceful assembly; association.",
+      "Owning property, refusing taxes, choosing judges and ignoring elections.",
+      "Driving, fishing, importing goods and choosing senators.",
+      "Avoiding laws, avoiding courts, avoiding police and avoiding Parliament.",
+    ],
+    answer: 0,
+    category: "Rights and Responsibilities",
+    source: "official-study-question",
+    explanation:
+      "The Charter protects fundamental freedoms including religion, expression, peaceful assembly and association.",
+  },
+  {
+    id: "rights-008",
+    prompt: "Which is an example of taking responsibility for yourself and your family?",
+    choices: [
+      "Getting a job, caring for family and working hard in keeping with your abilities.",
+      "Expecting the government to make every personal decision.",
+      "Refusing to help family members under any circumstances.",
+      "Voting in another person's name.",
+    ],
+    answer: 0,
+    category: "Rights and Responsibilities",
+    source: "official-study-question",
+    explanation:
+      "Discover Canada frames self-reliance, family care and contributing through work as examples of personal responsibility.",
   },
   {
     id: "rights-004",
@@ -104,7 +149,7 @@ export const questions: Question[] = [
     ],
     answer: 0,
     category: "Rights and Responsibilities",
-    source: "discover-canada-derived",
+    source: "official-study-question",
     explanation: "Voting and democratic participation are central citizenship responsibilities.",
   },
   {
@@ -118,7 +163,7 @@ export const questions: Question[] = [
     ],
     answer: 0,
     category: "Justice",
-    source: "discover-canada-derived",
+    source: "official-study-question",
     explanation: "The rule of law means no one is above the law, including elected officials and governments.",
   },
   {
@@ -132,7 +177,7 @@ export const questions: Question[] = [
     ],
     answer: 0,
     category: "Who We Are",
-    source: "discover-canada-derived",
+    source: "official-study-question",
     explanation: "The guide identifies Indigenous peoples, the French and the British as founding peoples.",
   },
   {
@@ -141,7 +186,7 @@ export const questions: Question[] = [
     choices: ["The people.", "The elders.", "The north.", "The hunters."],
     answer: 0,
     category: "Who We Are",
-    source: "discover-canada-derived",
+    source: "official-study-question",
     explanation: "Inuit means 'the people' in Inuktitut and refers to Indigenous peoples of the Arctic.",
   },
   {
@@ -155,8 +200,23 @@ export const questions: Question[] = [
     ],
     answer: 0,
     category: "Who We Are",
-    source: "discover-canada-derived",
+    source: "official-study-question",
     explanation: "The Metis are a distinct Indigenous people with mixed First Nations and European ancestry and their own culture.",
+  },
+  {
+    id: "history-013",
+    prompt: "Who was Sir Louis-Hippolyte La Fontaine?",
+    choices: [
+      "A champion of French-language rights and a key figure in responsible government.",
+      "Canada's first astronaut.",
+      "The first mayor of Vancouver.",
+      "A commander at Vimy Ridge.",
+    ],
+    answer: 0,
+    category: "History",
+    source: "official-study-question",
+    explanation:
+      "The official study questions name La Fontaine because of his role in responsible government and French-language rights.",
   },
   {
     id: "identity-004",
@@ -164,7 +224,7 @@ export const questions: Question[] = [
     choices: ["English and French.", "English and Inuktitut.", "French and Cree.", "English and Spanish."],
     answer: 0,
     category: "Who We Are",
-    source: "discover-canada-derived",
+    source: "official-study-question",
     explanation: "English and French have official-language status in Canada.",
   },
   {
@@ -178,7 +238,7 @@ export const questions: Question[] = [
     ],
     answer: 0,
     category: "History",
-    source: "discover-canada-derived",
+    source: "official-study-question",
     explanation: "Confederation refers to the union of colonies that created Canada in 1867.",
   },
   {
@@ -187,7 +247,7 @@ export const questions: Question[] = [
     choices: ["1812", "1867", "1914", "1982"],
     answer: 1,
     category: "History",
-    source: "discover-canada-derived",
+    source: "official-study-question",
     explanation: "Canada became a country on July 1, 1867.",
   },
   {
@@ -201,7 +261,7 @@ export const questions: Question[] = [
     ],
     answer: 0,
     category: "History",
-    source: "discover-canada-derived",
+    source: "official-study-question",
     explanation: "The original four provinces were Ontario, Quebec, Nova Scotia and New Brunswick.",
   },
   {
@@ -215,7 +275,7 @@ export const questions: Question[] = [
     ],
     answer: 0,
     category: "History",
-    source: "discover-canada-derived",
+    source: "official-study-question",
     explanation: "The railway linked east and west and symbolized national unity.",
   },
   {
@@ -229,8 +289,38 @@ export const questions: Question[] = [
     ],
     answer: 0,
     category: "History",
-    source: "discover-canada-derived",
+    source: "official-study-question",
     explanation: "The War of 1812 is remembered as an important defence of Canada and its emerging identity.",
+  },
+  {
+    id: "government-016",
+    prompt: "What is the difference between the role of the Sovereign and the role of the Prime Minister?",
+    choices: [
+      "The Sovereign is head of state; the Prime Minister is head of government.",
+      "The Sovereign writes local bylaws; the Prime Minister runs city councils.",
+      "The Sovereign is elected in a riding; the Prime Minister is appointed by mayors.",
+      "They have the same job and can overrule courts at any time.",
+    ],
+    answer: 0,
+    category: "Government",
+    source: "official-study-question",
+    explanation:
+      "Canada is a constitutional monarchy: the Sovereign is head of state, while the Prime Minister leads the elected government.",
+  },
+  {
+    id: "government-017",
+    prompt: "Who is your Member of Parliament?",
+    choices: [
+      "The person elected to represent your local federal riding in the House of Commons.",
+      "The mayor of your municipality.",
+      "The Lieutenant Governor of your province.",
+      "Any senator appointed from your province.",
+    ],
+    answer: 0,
+    category: "Elections",
+    source: "official-study-question",
+    explanation:
+      "Your MP is the elected federal representative for your riding. The exact name depends on where you live.",
   },
   {
     id: "history-006",
@@ -238,7 +328,7 @@ export const questions: Question[] = [
     choices: ["Canada's first Prime Minister.", "The first Governor General born in Canada.", "The founder of Nunavut.", "The inventor of insulin."],
     answer: 0,
     category: "History",
-    source: "discover-canada-derived",
+    source: "official-study-question",
     explanation: "Sir John A. Macdonald was Canada's first Prime Minister and a Father of Confederation.",
   },
   {
@@ -252,7 +342,7 @@ export const questions: Question[] = [
     ],
     answer: 0,
     category: "History",
-    source: "discover-canada-derived",
+    source: "official-study-question",
     explanation: "Many enslaved people escaped to Canada through the Underground Railroad.",
   },
   {
@@ -266,7 +356,7 @@ export const questions: Question[] = [
     ],
     answer: 0,
     category: "History",
-    source: "discover-canada-derived",
+    source: "official-study-question",
     explanation: "The Battle of Vimy Ridge is a major event in Canadian military history.",
   },
   {
@@ -275,7 +365,7 @@ export const questions: Question[] = [
     choices: ["Sir Frederick Banting.", "Alexander Graham Bell.", "John Graves Simcoe.", "Terry Fox."],
     answer: 0,
     category: "Modern Canada",
-    source: "discover-canada-derived",
+    source: "official-study-question",
     explanation: "Sir Frederick Banting and Charles Best discovered insulin, a landmark Canadian medical achievement.",
   },
   {
@@ -284,7 +374,7 @@ export const questions: Question[] = [
     choices: ["1867", "1918", "1982", "1999"],
     answer: 2,
     category: "Rights and Responsibilities",
-    source: "discover-canada-derived",
+    source: "official-study-question",
     explanation: "The Charter became part of Canada's Constitution in 1982.",
   },
   {
@@ -293,7 +383,7 @@ export const questions: Question[] = [
     choices: ["Newfoundland and Labrador.", "British Columbia.", "Saskatchewan.", "Prince Edward Island."],
     answer: 0,
     category: "History",
-    source: "discover-canada-derived",
+    source: "official-study-question",
     explanation: "Newfoundland joined Canada in 1949 and is now Newfoundland and Labrador.",
   },
   {
@@ -302,7 +392,7 @@ export const questions: Question[] = [
     choices: ["Nunavut.", "Yukon.", "Northwest Territories.", "Manitoba."],
     answer: 0,
     category: "Regions",
-    source: "discover-canada-derived",
+    source: "official-study-question",
     explanation: "Nunavut became a territory in 1999.",
   },
   {
@@ -316,7 +406,7 @@ export const questions: Question[] = [
     ],
     answer: 0,
     category: "Government",
-    source: "discover-canada-derived",
+    source: "official-study-question",
     explanation: "Canada's system combines the Crown, constitutional limits and parliamentary democracy.",
   },
   {
@@ -790,51 +880,29 @@ export const questions: Question[] = [
     source: "discover-canada-derived",
     explanation: "Due process means fair treatment through proper legal procedures.",
   },
-  {
-    id: "test-001",
-    prompt: "How many questions are on the Canadian citizenship test?",
-    choices: ["20.", "10.", "30.", "50."],
-    answer: 0,
-    category: "Test Format",
-    source: "discover-canada-derived",
-    explanation: "Canada.ca says the citizenship test has 20 questions.",
-  },
-  {
-    id: "test-002",
-    prompt: "How many correct answers are needed to pass the citizenship test?",
-    choices: ["15 out of 20.", "10 out of 20.", "18 out of 20.", "20 out of 20."],
-    answer: 0,
-    category: "Test Format",
-    source: "discover-canada-derived",
-    explanation: "A passing score is at least 15 correct answers out of 20.",
-  },
-  {
-    id: "test-003",
-    prompt: "How long is the citizenship test?",
-    choices: ["45 minutes.", "20 minutes.", "60 minutes.", "90 minutes."],
-    answer: 0,
-    category: "Test Format",
-    source: "discover-canada-derived",
-    explanation: "Canada.ca states that the test is 45 minutes long.",
-  },
-  {
-    id: "test-004",
-    prompt: "What kinds of questions are on the citizenship test?",
-    choices: ["Multiple choice or true/false.", "Only essays.", "Only oral speeches.", "Only map drawing."],
-    answer: 0,
-    category: "Test Format",
-    source: "discover-canada-derived",
-    explanation: "The official format is multiple choice and true/false.",
-  },
-  {
-    id: "test-005",
-    prompt: "What topic is not directly assessed by the citizenship test?",
-    choices: ["English or French language skill.", "Canadian history.", "Government.", "Canadian symbols."],
-    answer: 0,
-    category: "Test Format",
-    source: "discover-canada-derived",
-    explanation: "Canada.ca says the citizenship test does not assess language skills.",
-  },
 ];
 
 export const officialPracticeQuestions = questions.filter((question) => question.source === "official-practice");
+
+export const officialStudyQuestions = questions.filter((question) => question.source === "official-study-question");
+
+export const practiceSources = [
+  {
+    id: "ircc-sample",
+    name: "IRCC Sample MC",
+    description: "The 3 multiple-choice questions published on Canada.ca.",
+    questionIds: officialPracticeQuestions.map((question) => question.id),
+  },
+  {
+    id: "ircc-study-prompts",
+    name: "IRCC Study Prompts",
+    description: "Official Canada.ca study-question prompts converted into multiple-choice cards.",
+    questionIds: officialStudyQuestions.map((question) => question.id),
+  },
+  {
+    id: "ircc-full-official",
+    name: "Full Official Mix",
+    description: "A 20-question mix from the official sample and official study-question prompts.",
+    questionIds: [...officialPracticeQuestions, ...officialStudyQuestions].map((question) => question.id),
+  },
+];

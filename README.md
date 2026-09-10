@@ -5,14 +5,15 @@ Next.js app for drilling Canadian citizenship test questions with separate progr
 ## Modes
 
 - Drill: weakest-first multiple choice cards with immediate feedback.
-- Practice: 20-question practice sessions with a 15/20 passing target.
+- Practice: selectable official-source practice sets.
 
 Progress is stored per profile in `localStorage`, so leaving and returning in the same browser keeps history.
 
 ## Question Sources
 
 - Official practice questions: Canada.ca Discover Canada study-question page.
-- Drill questions: generated from topics covered in the official Discover Canada study guide.
+- Official study prompts: Canada.ca study-question prompts converted into multiple-choice cards.
+- Drill questions: generated from topics covered in the official Discover Canada study guide, with meta test-format questions excluded.
 
 ## Development
 

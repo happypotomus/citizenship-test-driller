@@ -335,6 +335,40 @@
   margin-bottom: 18px;
 }
 
+.practiceControls {
+  display: grid;
+  grid-template-columns: minmax(220px, 320px) minmax(0, 1fr);
+  gap: 14px;
+  align-items: end;
+  margin-bottom: 18px;
+  padding: 14px;
+  border: 1px solid #dfe5ec;
+  border-radius: 8px;
+  background: #f9fbfd;
+}
+
+.practiceControls label {
+  display: grid;
+  gap: 8px;
+  color: #374151;
+  font-weight: 800;
+}
+
+.practiceControls select {
+  height: 42px;
+  border: 1px solid #cfd8e3;
+  border-radius: 6px;
+  padding: 0 10px;
+  color: #111827;
+  background: #ffffff;
+}
+
+.practiceControls p {
+  margin: 0;
+  color: #586273;
+  line-height: 1.5;
+}
+
 .progressLine {
   color: #5b6472;
   font-weight: 800;
@@ -375,7 +409,8 @@
   }
 
   .statsGrid,
-  .studyLayout {
+  .studyLayout,
+  .practiceControls {
     grid-template-columns: 1fr;
   }
 
